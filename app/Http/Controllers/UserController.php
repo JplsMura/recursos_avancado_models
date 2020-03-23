@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Address;
+use App\Post;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -62,7 +63,7 @@ class UserController extends Controller
 
             echo "Endereço: {$userAdress->address}, Número: {$userAdress->number}<br>";
             echo "Complemento: {$userAdress->complement}, {$userAdress->zipcode}<br>";
-            echo "Cidade/Estado: {$userAdress->city}/{$userAdress->state}";
+            echo "Cidade/Estado: {$userAdress->city}/{$userAdress->state}<br>";
         }
 
         /*Criação de endereço de usuário a partir do próprio usuario, passando o model de Delivery e chamando
@@ -150,6 +151,22 @@ class UserController extends Controller
         ele traz o relacionamento do mesmo e pode diminuir a performance do banco de dados*/
 //        $users = User::with(addressDelivery);
 //        dd($users);
+
+        /**********************************Relacionamento um-para-muitos**********************************************/
+        $posts = $user->posts()->orderBy('id', 'DESC')->get();
+
+        if($posts){
+
+            echo "<h1>Artigos</h1><br>";
+
+            foreach($posts as $post){
+
+                echo "Titulo: #{$post->id} / {$post->title}<br>";
+                echo "Subtitulo: {$post->subtitile}<br>";
+                echo "Contéudo: {$post->description}<br><hr>";
+
+            }
+        }
 
     }
 
